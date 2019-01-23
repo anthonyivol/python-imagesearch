@@ -3,7 +3,11 @@ import numpy as np
 import pyautogui
 import random
 import time
+from PIL import Image
 
+import subprocess
+is_retina = subprocess.call(
+    "system_profiler SPDisplaysDataType | grep 'retina'", shell=True)
 
 '''
 
@@ -44,8 +48,11 @@ the top left corner coordinates of the element if found as an array [x,y] or [-1
 '''
 def imagesearcharea(image, x1,y1,x2,y2, precision=0.8, im=None) :
     if im is None :
-        im = region_grabber(region=(x1, y1, x2, y2))
-        #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
+      im = region_grabber(region=(x1, y1, x2, y2))
+      if(is_retina):
+         im.thumbnail((round(im.size[0] * 0.5), round(im.size[1] * 0.5)))
+      
+      # im.save('testarea.png') 
 
     img_rgb = np.array(im)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -97,7 +104,10 @@ the top left corner coordinates of the element if found as an array [x,y] or [-1
 '''
 def imagesearch(image, precision=0.8):
     im = pyautogui.screenshot()
-    #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
+    if(is_retina):
+         im.thumbnail((round(im.size[0] * 0.5), round(im.size[1] * 0.5)))
+    # usefull for debugging purposes, this will save the captured region as "testarea.png"
+   #  im.save('testarea.png') 
     img_rgb = np.array(im)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread(image, 0)
@@ -194,6 +204,8 @@ optionally an output image with all the occurances boxed with a red outline.
 '''
 def imagesearch_count(image, precision=0.9):
     img_rgb = pyautogui.screenshot()
+    if(is_retina):
+         img_rgb.thumbnail((round(img_rgb.size[0] * 0.5), round(img_rgb.size[1] * 0.5)))
     img_rgb = np.array(img_rgb)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread(image, 0)
