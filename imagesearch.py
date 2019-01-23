@@ -3,7 +3,6 @@ import numpy as np
 import pyautogui
 import random
 import time
-from PIL import Image
 
 import subprocess
 is_retina = subprocess.call(
