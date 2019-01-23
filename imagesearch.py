@@ -20,11 +20,12 @@ output : a PIL image of the area selected.
 
 '''
 def region_grabber(region):
+    if(is_retina): region = [n * 2 for n in region]
     x1 = region[0]
     y1 = region[1]
     width = region[2]-x1
     height = region[3]-y1
-
+    print(region)  
     return pyautogui.screenshot(region=(x1,y1,width,height))
 
 
@@ -52,7 +53,7 @@ def imagesearcharea(image, x1,y1,x2,y2, precision=0.8, im=None) :
       if(is_retina):
          im.thumbnail((round(im.size[0] * 0.5), round(im.size[1] * 0.5)))
       
-      # im.save('testarea.png') 
+      im.save('testarea.png') 
 
     img_rgb = np.array(im)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
