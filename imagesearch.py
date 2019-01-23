@@ -23,8 +23,7 @@ def region_grabber(region):
     x1 = region[0]
     y1 = region[1]
     width = region[2]-x1
-    height = region[3]-y1
-    print(region)  
+    height = region[3]-y1 
     return pyautogui.screenshot(region=(x1,y1,width,height))
 
 
